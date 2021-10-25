@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models.fields import TextField
+from django.conf import settings
 
 
 # Create your models here.
@@ -31,7 +32,7 @@ class Post(models.Model):
     slug=models.SlugField(max_length=150,unique_for_date='published')
     published=models.DateTimeField(default=timezone.now)
     author=models.ForeignKey(
-        User,on_delete=models.CASCADE,related_name='blog_posts')
+        settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='blog_posts')
     status=models.CharField(
         choices=options,max_length=150,default='published')
     objects=models.Manager()
