@@ -9,6 +9,8 @@ import Footer from './components/Footer';
 import Register from './components/Register';
 import Login from './components/Login';
 import Logout from './components/Logout';
+import SinglePost from './components/SinglePost';
+import  Search  from './components/Search';
 
 function Routing(){
   return(
@@ -21,6 +23,8 @@ function Routing(){
   <Route  path="/register" component={Register} /> 
   <Route  path="/login" component={Login} /> 
   <Route  path="/logout" component={Logout} /> 
+  <Route path="/post/:slug" component={SinglePost} />
+  <Route path="/search" component={Search} />
     </Switch>
     <Footer/> 
     </React.StrictMode>
