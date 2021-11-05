@@ -10,7 +10,14 @@ app_name='blog_api'
 
 
 urlpatterns = [
-    path('post/',views.PostDetail.as_view(),name='postDetail'),
+    path('post/<str:pk>/',views.PostDetail.as_view(),name='postDetail'),
     path('',views.PostList.as_view(),name='postList'),
     path('search/',views.PostSearch.as_view(),name='postSearch'),
+    #Post admin urls
+    path('admin/create/',views.CreatePost.as_view(),name='createPost'),
+    path('admin/edit/postdetail/<int:pk>/',views.AdminPostDetail.as_view(),name='adminPostDetail'),
+    path('admin/edit/<int:pk>/',views.EditPost.as_view(),name='editPost'),
+    path('admin/delete/<int:pk>/',views.DeletePost.as_view(),name='deletePost')
+
+    
 ]
