@@ -19,12 +19,12 @@ from rest_framework.permissions import AllowAny, IsAuthenticated ,BasePermission
 #         return  obj.author == request.user 
 
 class PostList(generics.ListAPIView):
-    
     serializer_class = PostSerializer
+    permission_class = [IsAdminUser]
 
     def get_queryset(self):
-        user = self.request.user
-        return Post.objects.filter(author=user)
+     #   user = self.request.user
+        return Post.objects.all()
     
 class PostDetail(generics.RetrieveAPIView):
   

@@ -24,10 +24,10 @@ function Routing(){
   <Header/>
     <Switch>
   <Route exact path="/" component={App} /> 
-  <Route path="/admin" component={Admin} />
   <Route path="/admin/create" component={Create} />
   <Route path="/admin/edit/:id" component={Edit} />
   <Route path="/admin/delete/:id" component={Delete} />
+  <Route path="/admin" component={Admin} />
   <Route  path="/register" component={Register} /> 
   <Route  path="/login" component={Login} /> 
   <Route  path="/logout" component={Logout} /> 
