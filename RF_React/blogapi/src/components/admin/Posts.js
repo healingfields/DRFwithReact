@@ -44,7 +44,18 @@ const Posts = (props) => {
     const { posts } = props;
     console.log("im here");
     const classes = useStyles();
-    if(!posts || posts.length === 0) return <p>can not find any posts, sorry</p>;
+    if(!posts || posts.length === 0) return (
+    <React.Fragment>
+        <p>can not find any posts, sorry </p>
+        <Button
+            href={'/admin/create'}
+            variant="contained"
+            color="primary"
+            >
+                New Post
+            </Button>
+    </React.Fragment>
+    );
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">

@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme)=>({
-    paper : { 
+    paper : {
         marginTop : theme.spacing(10),
         display : 'flex',
         flexDirection : 'column',
@@ -46,7 +46,7 @@ export default function Create() {
                 .replace(/[^\w\-]+/g, '') // Remove all non-word characters
                 .replace(/\-\-+/g, '-') // Replace multiple - with single -
                 .replace(/^-+/, '') // Trim - from start of text
-                .replace(/-+$/, ''); // Trim - from end of text     
+                .replace(/-+$/, ''); // Trim - from end of text
     }
 
     const classes = useStyles();
@@ -57,11 +57,17 @@ export default function Create() {
                 excerpt : '',
                 content : '',
     });
-    
+    const [postImage,setPostImage]=useState(null);
     const [formData,setFormData] = useState(initialFormData);
 
     const handleChange = (e) => {
-        if([e.target.name]=='title') { 
+        if([e.target.name] == 'image'){
+            setPostImage({
+                image:e.target.files,
+            });
+            console.log(e.target.files);
+        }
+        if([e.target.name]=='title') {
             setFormData({
                 ...formData,
                 [e.target.name]:e.target.value.trim(),
@@ -77,17 +83,21 @@ export default function Create() {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        axiosInstance.post('admin/create/',{
-            title:formData.title,
-            slug:formData.slug,
-            author:1,
-            excerpt:formData.excerpt,
-            content:formData.excerpt,
-        }).then((res)=>{
-            history.push('/admin/');
-        });
-
-    };
+        console.log(formData,postImage);
+        const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+        let form = new FormData();
+        form.append('title',formData.title);
+        form.append('slug',formData.slug);
+        form.append('author',1);    
+        form.append('excerpt',formData.excerpt);
+        form.append('content',formData.content);
+        form.append('image',postImage.image[0]);
+        axiosInstance.post('admin/create/', form);
+        // setTimeout(()=>{history.push({
+        //     pathname: '/admin/',
+        // });
+        // window.location.reload();},30);
+        };
 
     return (
         <Container component="main" maxWidth="xs">
@@ -152,6 +162,14 @@ export default function Create() {
 								rows={4}
 							/>
 						</Grid>
+                        <input
+                                accept="image/*"
+                                className={classes.input}
+                                id="post-image"
+                                onChange={handleChange}
+                                name="image"
+                                type="file"
+                        />
 					</Grid>
 					<Button
 						type="submit"

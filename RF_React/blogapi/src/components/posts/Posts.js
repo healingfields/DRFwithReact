@@ -52,7 +52,7 @@ const Posts = (props) => {
                                         className={classes.link}>
                                     <CardMedia 
                                             className={classes.cardMedia}
-                                            image="https://source.unsplash.com/random"
+                                            image={post.image}
                                             title = "image title"
                                     />
                                     </Link>

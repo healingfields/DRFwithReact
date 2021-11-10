@@ -11,10 +11,12 @@ import  Container from '@material-ui/core/Container';
 import  Link from '@material-ui/core/Link';
 import {useLocation} from 'react-router-dom';
 
+
+
+
+
 const useStyles = makeStyles((theme)=>({
-    cardMedia:{
-        paddingTo:'56.25%',
-    },
+
     Link:{
         margin:theme.spacing(1,1.5),
     },
@@ -54,19 +56,20 @@ export const Search = () => {
     }, [setAppState]);
     return (
         <React.Fragment>
-            <Container maxWidth="md" component="main">
-                <Grid Container  spacing={5} alignItems="flex-end">
+            <Container maxWidth="md" component="main" >
+                <Grid container  spacing={2} justifyContent="center" style={{marginTop:'200px'}}>
                     {appState.posts.map((post)=>{
                         return(
-                            <Grid item key={post.id} xs={12} md={4}> 
+                            <Grid item key={post.id} xs={12} md={4} > 
                                    <Card className={classes.card}>
                                     <Link 
                                         color="textPrimary"
                                         href={'post/' + post.slug}
                                         className={classes.link}>
                                     <CardMedia 
+                                            component="img"
                                             className={classes.cardMedia}
-                                            image="https://source.unsplash.com/random/"
+                                            image={post.image}
                                             title = "image title"
                                     />
                                     </Link>
