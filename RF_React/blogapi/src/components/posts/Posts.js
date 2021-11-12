@@ -73,7 +73,7 @@ const Posts = (props) => {
                                                 variant="p"
                                                 color="textSecondary"
                                                 >
-                                                    {post.excerpt.substr(0,60)}...
+                                                    {post.excerpt.substr(0,80)}...
                                             </Typography>
                                         </div>
                                     </CardContent>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axiosInstance from '../../axios';
+import axiosInstance from '../../axios/login';
 import { useHistory } from 'react-router-dom'
 //Material UI
 import Avatar from  '@material-ui/core/Avatar';
@@ -13,6 +13,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import FacebookLogin from 'react-facebook-login';
+import fbLogin from '../../axios/facebookLogin';
 
 const useStyles = makeStyles((theme)=>({
     paper:{
@@ -49,17 +51,26 @@ function Login() {
         console.log(formData);
 
         axiosInstance.post(
-            'token/',{
-                email:formData.email,
+            'auth/token/',{
+                grant_type:'password',
+                username:formData.email,
                 password:formData.password,
+                client_id:'Z4bAkGwhhJATtS9ajFMDJwWlOk4Tg04zjqAJz7yk',
+                client_secret:'jFs7OJ40GBgLEXgNomJMvGruk8NcF32qOrKddlLq5hJsgtJUn6iWWjS4yMSCncS5jKdE30UcWfAyKgAvlPjte9qxxnX3Cer09zamRXNrmxCw7fh5hECegNzrpHadinuD',
             })
             .then((res)=>{
-                localStorage.setItem('access_token',res.data.access);
-                localStorage.setItem('refresh_token',res.data.refresh);
-                axiosInstance.defaults.headers['Authorization']=
-                    'JWT ' + localStorage.getItem('access_token');
-                history.push('/');
+                console.log(res);
+                localStorage.setItem('access_token',res.data.access_token);
+                localStorage.setItem('refresh_token',res.data.refresh_token);
+                // axiosInstance.defaults.headers['Authorization']=
+                //     'JWT ' + localStorage.getItem('access_token');
+                // history.push('/');
             });
+    };
+
+    const responseFacebook = (response) =>{ 
+        console.log(response);
+        fbLogin(response.accessToken);
     };
 
     const classes=useStyles();
@@ -110,6 +121,12 @@ function Login() {
                             >
                         Sing in
                     </Button>
+                    <FacebookLogin
+                    appId="804533820392536"
+                    autoLoad={true}
+                    fields="name,email,picture"
+                  
+                    callback={responseFacebook} />
 
 
                 </form>

@@ -93,10 +93,10 @@ export default function Create() {
         form.append('content',formData.content);
         form.append('image',postImage.image[0]);
         axiosInstance.post('admin/create/', form);
-        // setTimeout(()=>{history.push({
-        //     pathname: '/admin/',
-        // });
-        // window.location.reload();},30);
+        setTimeout(()=>{history.push({
+            pathname: '/admin/',
+        });
+        window.location.reload();},30);
         };
 
     return (

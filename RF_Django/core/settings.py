@@ -33,7 +33,10 @@ INSTALLED_APPS = [
     'rest_framework', 
     'corsheaders',
     'users',
-    'rest_framework_simplejwt.token_blacklist',
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2',
+    # 'rest_framework_simplejwt.token_blacklist',
     ]
 
 MIDDLEWARE = [
@@ -61,6 +64,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -129,30 +134,59 @@ REST_FRAMEWORK={
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES':[
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'drf_social_oauth2.authentication.SocialAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
-]
+# curl -X POST -d "client_id=Z4bAkGwhhJATtS9ajFMDJwWlOk4Tg04zjqAJz7yk&client_secret=jFs7OJ40GBgLEXgNomJMvGruk8NcF32qOrKddlLq5hJsgtJUn6iWWjS4yMSCncS5jKdE30UcWfAyKgAvlPjte9qxxnX3Cer09zamRXNrmxCw7fh5hECegNzrpHadinuD&grant_type=password&username=user2&password=123" http://localhost:8000/auth/token
+
+
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 AUTH_USER_MODEL = "users.MyUser"
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM':'HS256',
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES':('JWT',),
-    'USER_ID_FIELD':'id',
-    'USER_ID_CLAIM':'user_id',
-    'AUTH_TOKEN_CLASSES':('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM':'token_type',
+# SIMPLE_JWT = {
+#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+#     'ROTATE_REFRESH_TOKENS': True,
+#     'BLACKLIST_AFTER_ROTATION': True,
+#     'ALGORITHM':'HS256',
+#     'SIGNING_KEY': SECRET_KEY,
+#     'VERIFYING_KEY': None,
+#     'AUTH_HEADER_TYPES':('JWT',),
+#     'USER_ID _FIELD':'id',
+#     'USER_ID_CLAIM':'user_id',
+#     'AUTH_TOKEN_CLASSES':('rest_framework_simplejwt.tokens.AccessToken',),
+#     'TOKEN_TYPE_CLAIM':'token_type',
+# }
+
+AUTHENTICATION_BACKENDS = ( 
+    # Facebook OAuth2
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+
+    # drf_social_oauth2
+    'drf_social_oauth2.backends.DjangoOAuth2',
+
+    # Django
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Facebook configuration
+SOCIAL_AUTH_FACEBOOK_KEY = '804533820392536'
+SOCIAL_AUTH_FACEBOOK_SECRET = '64aad152f26d87b169a871eeff43421d'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:3000/'
+# Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
+# Email is not sent by default, to get it, you must request the email permission.
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email'
 }
+SOCIAL_AUTH_USER_FIELDS=['email','username','first_name','password']
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/' 

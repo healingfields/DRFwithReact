@@ -22,6 +22,7 @@ from rest_framework import status
 #         return  obj.author == request.user 
 
 class PostList(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
     permission_class = [IsAdminUser]
 
